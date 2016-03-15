@@ -37,9 +37,8 @@
     <AssemblyOriginatorKeyFile>..\..\Shared\ILuffy.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IOPPrinter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\iLuffy\ILuffy\bin\Release\IOPPrinter.dll</HintPath>
+    <Reference Include="IOPPrinter">
+      <HintPath>..\..\..\ILuffy\buildArtifacts\net40\IOPPrinter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -6,7 +6,9 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
+using ILuffy.IOP;
 using ILuffy.IOP.Ioc;
+using ILuffy.IOP.Logger.Impl;
 using ILuffy.UGuest.Notification.View;
 using ILuffy.UGuest.Notification.ViewModel;
 
@@ -37,6 +39,7 @@ namespace ILuffy.UGuest.Notification
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            LoggerUtility.Logger = new Log4NetImpl();
 
             new IocContainerInstaller().InstallFromConfiguration();
 

@@ -53,17 +53,14 @@
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net40\Castle.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="IOPCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPCore.dll</HintPath>
+    <Reference Include="IOPCore">
+      <HintPath>..\..\..\ILuffy\buildArtifacts\net40\IOPCore.dll</HintPath>
     </Reference>
-    <Reference Include="IOPI18N, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPI18N.dll</HintPath>
+    <Reference Include="IOPI18N">
+      <HintPath>..\..\..\ILuffy\buildArtifacts\net40\IOPI18N.dll</HintPath>
     </Reference>
-    <Reference Include="IOPUI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPUI.dll</HintPath>
+    <Reference Include="IOPUI">
+      <HintPath>..\..\..\ILuffy\buildArtifacts\net40\IOPUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

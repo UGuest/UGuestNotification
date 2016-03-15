@@ -5,10 +5,13 @@
     using System.Windows.Input;
     using Domain;
     using Domain.Service;
+    using IOP;
     using IOP.Ioc;
+    using IOP.UI;
     using IOP.UI.Input;
     using IOP.UI.ViewModel;
     using Repository;
+
     class LoginViewModel : WorkerViewModelBase, IDisposable
     {
         #region constructor
@@ -86,20 +89,34 @@
 
         private void Login()
         {
-            var loginService = IocContainer.Container.Resolve<ILoginService>();
-            var config = IocContainer.Container.Resolve<IConfigRepository>();
-
-            FlyingMessageContext.Current.HostUrl = config.HostUrl;
-            FlyingMessageContext.Current.LoginName = userName;
-            FlyingMessageContext.Current.Password = password.SecurePassword.Copy();
-
-            if (loginService.Login())
+            try
             {
-                Message = new MessageItem(MessageLevel.Info, "", "登陆。");
+                var loginService = IocContainer.Container.Resolve<ILoginService>();
+                var config = IocContainer.Container.Resolve<IConfigRepository>();
+
+                FlyingMessageContext.Current.HostUrl = config.HostUrl;
+                FlyingMessageContext.Current.LoginName = userName;
+                FlyingMessageContext.Current.Password = password.SecurePassword;
+
+                if (loginService.Login())
+                {
+                    
+                }
+                else
+                {
+                    Message = new MessageItem(MessageLevel.Error,
+                        I18NUtility.GetString("I18N_MessageBoxTitle"),
+                        I18NUtility.GetString("I18N_LoginFailed"));
+                }
             }
-            else
+            catch(Exception ex)
             {
-                Message = new MessageItem(MessageLevel.Info, "", "登陆失败");
+                LoggerUtility.WriteMessage(Severity.Error, 
+                    I18NUtility.GetString("I18N_LoginFailedWithDetails"), ex);
+
+                Message = new MessageItem(MessageLevel.Error,
+                        I18NUtility.GetString("I18N_MessageBoxTitle"),
+                        I18NUtility.GetString("I18N_LoginFailedWithDetails", ex.Message));
             }
         }
 

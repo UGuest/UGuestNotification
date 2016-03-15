@@ -7,6 +7,12 @@
     {
         string HostUrl { get; set; }
 
+        string UserName { get; set; }
+
+        string EncrypedPassword { get; set; }
+
+        bool RememberAccount { get; set; }
+
         IList<string> PrintedTrades { get; set; }
 
         DateTime QueryTime { get; set; }

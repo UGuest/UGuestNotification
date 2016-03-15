@@ -8,4 +8,7 @@
     <s:String x:Key="I18N_Login">登录</s:String>
     <s:String x:Key="I18N_Exist">退出</s:String>
     <s:String x:Key="I18N_RememberPassword">记住密码</s:String>
+    <s:String x:Key="I18N_MessageBoxTitle">通知</s:String>
+    <s:String x:Key="I18N_LoginFailed">登陆失败，请检查用户名或者密码。</s:String>
+    <s:String x:Key="I18N_LoginFailedWithDetails">登陆失败，请检查用户名或者密码。错误消息:{0}</s:String>
 </ResourceDictionary>
