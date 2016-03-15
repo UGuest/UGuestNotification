@@ -1,0 +1,15 @@
+﻿<Application x:Class="ILuffy.UGuest.Notification.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ILuffy.UGuest.Notification">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/IOPUI;component/Resource/I18N/zh-cn.xaml" />
+                <ResourceDictionary Source="/Resource/I18N/zh-cn.xaml" />
+                <ResourceDictionary Source="/IOPUI;component/Resource/Style/Default.xaml" />
+                <ResourceDictionary Source="/Resource/Style/Default.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

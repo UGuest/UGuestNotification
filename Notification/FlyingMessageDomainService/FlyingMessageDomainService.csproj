@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{418B7B5C-066C-4C09-A62E-54875053FFF9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ILuffy.UGuest.Domain.Service</RootNamespace>
+    <AssemblyName>FlyingMessageDomainService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\Shared\ILuffy.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="IOPCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPCore.dll</HintPath>
+    </Reference>
+    <Reference Include="IOPI18N, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPI18N.dll</HintPath>
+    </Reference>
+    <Reference Include="IOPPrinter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=588184177fcaff83, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\iLuffy\ILuffy\buildArtifacts\net40\IOPPrinter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LoginService.cs" />
+    <Compile Include="PrinterService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TradeService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FlyingMessageDomainServiceIntention\FlyingMessageDomainServiceIntention.csproj">
+      <Project>{d05f5c03-fa1d-4246-b20f-4848808b0d0f}</Project>
+      <Name>FlyingMessageDomainServiceIntention</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlyingMessageDomain\FlyingMessageDomain.csproj">
+      <Project>{bddae5f2-6b66-4974-81c2-2a86525f1eb1}</Project>
+      <Name>FlyingMessageDomain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlyingMessageI18N\FlyingMessageI18N.csproj">
+      <Project>{32c9858f-6c04-428c-a322-9be32cf30490}</Project>
+      <Name>FlyingMessageI18N</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlyingMessageRepositoryIntention\FlyingMessageRepositoryIntention.csproj">
+      <Project>{dec8b5e3-59ee-4693-b42f-3a11a6bf81ab}</Project>
+      <Name>FlyingMessageRepositoryIntention</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,110 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ILuffy.UGuest.Notification"
+                    xmlns:IOPUI="clr-namespace:ILuffy.IOP.UI.View;assembly=IOPUI"
+                    xmlns:vm="clr-namespace:ILuffy.UGuest.Notification.ViewModel"
+                    xmlns:vw="clr-namespace:ILuffy.UGuest.Notification.View"
+                    >
+
+    <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+        <vw:Login />
+    </DataTemplate>
+
+    <!--
+    This style configures the normal button
+    -->
+    <Style TargetType="{x:Type Button}">
+        <Setter Property="Foreground" Value="#333333" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Background" Value="#ffffff" />
+        <Setter Property="Height" Value="28" />
+        <Setter Property="MinWidth" Value="80" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="BorderBrush" Value="#aaaaaa" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border" 
+						BorderBrush="{TemplateBinding BorderBrush}"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,15,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#eeeeee" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#e1e1e1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#f1f1f1" />
+                            <Setter Property="Foreground" Value="#aaaaaa" />
+                            <Setter Property="BorderBrush" Value="#f1f1f1" />
+                            <Setter Property="BorderThickness" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="BorderBrush" Value="#aaaaaa" />
+                            <Setter Property="BorderThickness" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!--
+    this style apply to Label
+    -->
+    <Style TargetType="Label" >
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#333333" />
+    </Style>
+
+    <!--
+    this style apply to TextBox
+    -->
+    <Style TargetType="TextBox">
+        <Setter Property="MinWidth" Value="240" />
+        <Setter Property="Height" Value="23" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#333333" />
+    </Style>
+
+    <!--
+    this style apply to PasswordBox
+    -->
+    <Style TargetType="PasswordBox">
+        <Setter Property="MinWidth" Value="240" />
+        <Setter Property="Height" Value="23" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#333333" />
+    </Style>
+
+    <!--
+    this style apply to the page footer
+    -->
+    <Style x:Key="Style_ButtonStackPanel" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Style.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Margin" Value="5,0,5,0" />
+            </Style>
+            <Style TargetType="{x:Type IOPUI:ImageButton}" BasedOn="{StaticResource {x:Type IOPUI:ImageButton}}">
+                <Setter Property="Margin" Value="5,0,5,0" />
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style TargetType="{x:Type IOPUI:IOPMessageBox}">
+        <Setter Property="Title" Value="{StaticResource I18N_Title}" />
+    </Style>
+
+</ResourceDictionary>
