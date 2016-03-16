@@ -9,7 +9,7 @@
 
         string UserName { get; set; }
 
-        string EncrypedPassword { get; set; }
+        string EncryptedPassword { get; set; }
 
         bool RememberAccount { get; set; }
 
@@ -20,5 +20,7 @@
         int RetryTimes { get; set; }
 
         int RetryInterval { get; set; }
+
+        void Update();
     }
 }

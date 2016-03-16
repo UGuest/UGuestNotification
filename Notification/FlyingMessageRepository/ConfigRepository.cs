@@ -7,14 +7,42 @@
 
     internal class ConfigRepository : IConfigRepository
     {
+        private Configuration config;
+        private KeyValueConfigurationCollection settings;
+        private bool changed;
+
+        public ConfigRepository()
+        {
+            config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            settings = config.AppSettings.Settings;
+            changed = false;
+        }
+
         private string GetValue(string key)
         {
-            return ConfigurationManager.AppSettings[key];
+            var valueElement = settings[key];
+
+            if (valueElement != null)
+            {
+                return valueElement.Value;
+            }
+
+            return null;
         }
 
         private void SetValue(string key, string value)
         {
-            ConfigurationManager.AppSettings.Set(key, value);
+            var settings = config.AppSettings.Settings;
+
+            if (settings[key] == null)
+            {
+                settings.Add(key, value);
+            }
+            else
+            {
+                settings[key].Value = value;
+            }
+            changed = true;
         }
 
         private DateTime GetDateTime(string key)
@@ -31,6 +59,17 @@
             var int32AsString = GetValue(key);
 
             int.TryParse(int32AsString, out value);
+
+            return value;
+        }
+
+        private bool GetBoolean(string key)
+        {
+            var value = false;
+
+            var boolAsString = GetValue(key);
+
+            bool.TryParse(boolAsString, out value);
 
             return value;
         }
@@ -87,40 +126,28 @@
 
         public string UserName
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return GetValue("userName"); }
+            set { SetValue("userName", value); }
         }
 
-        public string EncrypedPassword
+        public string EncryptedPassword
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return GetValue("encryptedPassword"); }
+            set { SetValue("encryptedPassword", value); }
         }
 
         public bool RememberAccount
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return GetBoolean("rememberAccount"); }
+            set { SetValue("rememberAccount", value.ToString()); }
+        }
 
-            set
+        public void Update()
+        {
+            if (changed)
             {
-                throw new NotImplementedException();
+                config.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(config.AppSettings.SectionInformation.Name);
             }
         }
     }

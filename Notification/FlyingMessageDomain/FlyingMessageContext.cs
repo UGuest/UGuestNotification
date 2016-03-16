@@ -33,6 +33,13 @@
 
                 return instance.Value;
             }
+            set
+            {
+                if (instance != null)
+                {
+                    instance.Value = value;
+                }
+            }
         }
 
         public string LoginName { get; set; }

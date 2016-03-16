@@ -87,20 +87,60 @@
 
         #endregion
 
+        #region Events
+        private AuthenticationCompletedEventHandler authenticationCompleted;
+        public event AuthenticationCompletedEventHandler AuthenticationCompleted
+        {
+            add
+            {
+                authenticationCompleted = 
+                    (AuthenticationCompletedEventHandler)Delegate.Combine(authenticationCompleted, value);
+            }
+            remove
+            {
+                authenticationCompleted = 
+                    (AuthenticationCompletedEventHandler)Delegate.Remove(authenticationCompleted, value);
+            }
+        }
+
+        private void OnAuthenticationCompleted(AuthenticationCompletedEventArgs e)
+        {
+            if (authenticationCompleted != null)
+            {
+                authenticationCompleted(this, e);
+            }
+        }
+        #endregion
+
         private void Login()
         {
+            FlyingMessageContext context = null;
+            var authorised = false;
+            Exception exception = null;
+
             try
             {
                 var loginService = IocContainer.Container.Resolve<ILoginService>();
+                var cryptographyService = IocContainer.Container.Resolve<ICryptographyService>();
                 var config = IocContainer.Container.Resolve<IConfigRepository>();
 
                 FlyingMessageContext.Current.HostUrl = config.HostUrl;
                 FlyingMessageContext.Current.LoginName = userName;
                 FlyingMessageContext.Current.Password = password.SecurePassword;
 
+                context = FlyingMessageContext.Current;
+
                 if (loginService.Login())
                 {
-                    
+                    config.UserName = userName;
+                    if (rememberPassword)
+                    {
+                        config.EncryptedPassword = cryptographyService.Protect(
+                            password.SecurePassword.ConvertToString());
+                        config.RememberAccount = rememberPassword;
+                    }
+                    config.Update();
+                    authorised = true;
                 }
                 else
                 {
@@ -111,6 +151,7 @@
             }
             catch(Exception ex)
             {
+                exception = ex;
                 LoggerUtility.WriteMessage(Severity.Error, 
                     I18NUtility.GetString("I18N_LoginFailedWithDetails"), ex);
 
@@ -118,6 +159,13 @@
                         I18NUtility.GetString("I18N_MessageBoxTitle"),
                         I18NUtility.GetString("I18N_LoginFailedWithDetails", ex.Message));
             }
+            finally
+            {
+                FlyingMessageContext.Current = null;
+            }
+
+            var eventArgs = new AuthenticationCompletedEventArgs(context, authorised, exception);
+            OnAuthenticationCompleted(eventArgs);
         }
 
         private bool CanLogin()

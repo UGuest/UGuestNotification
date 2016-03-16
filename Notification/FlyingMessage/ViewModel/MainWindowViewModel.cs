@@ -14,11 +14,28 @@
                 {
                     var loginVM = new LoginViewModel();
                     loginVM.ExistCommand = new RelayCommand(param => OnRequestClose());
+                    loginVM.AuthenticationCompleted += LoginVM_AuthenticationCompleted;
 
                     content = loginVM;
                 }
 
                 return content;
+            }
+            set
+            {
+                CheckPropertyChanged(ref content, value);
+            }
+        }
+
+        private void LoginVM_AuthenticationCompleted(object sender, AuthenticationCompletedEventArgs e)
+        {
+            if (e.Authorised)
+            {
+                var originalVM = content;
+
+                var allTradesVM = new AllTradesViewModel(e.Context);
+
+                Content = allTradesVM;
             }
         }
 

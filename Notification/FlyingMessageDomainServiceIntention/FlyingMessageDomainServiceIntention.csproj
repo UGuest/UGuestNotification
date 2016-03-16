@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICryptographyService.cs" />
     <Compile Include="ILoginService.cs" />
     <Compile Include="IPrinterService.cs" />
     <Compile Include="ITradeService.cs" />

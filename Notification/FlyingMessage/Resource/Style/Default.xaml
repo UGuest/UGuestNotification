@@ -9,6 +9,9 @@
     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
         <vw:Login />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:AllTradesViewModel}">
+        <vw:AllTrades />
+    </DataTemplate>
 
     <!--
     This style configures the normal button
