@@ -96,12 +96,17 @@
     <Style x:Key="Style_ButtonStackPanel" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
         <Style.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="Margin" Value="5,0,5,0" />
             </Style>
             <Style TargetType="{x:Type IOPUI:ImageButton}" BasedOn="{StaticResource {x:Type IOPUI:ImageButton}}">
                 <Setter Property="Margin" Value="5,0,5,0" />
+            </Style>
+            <Style TargetType="CheckBox" >
+                <Setter Property="Margin" Value="5,0,5,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </Style.Resources>
     </Style>

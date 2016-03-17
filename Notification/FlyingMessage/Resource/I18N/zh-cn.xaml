@@ -11,4 +11,9 @@
     <s:String x:Key="I18N_MessageBoxTitle">通知</s:String>
     <s:String x:Key="I18N_LoginFailed">登陆失败，请检查用户名或者密码。</s:String>
     <s:String x:Key="I18N_LoginFailedWithDetails">登陆失败，请检查用户名或者密码。错误消息:{0}</s:String>
+    <s:String x:Key="I18N_AutoRefreshAllTrades">自动刷新</s:String>
+    <s:String x:Key="I18N_AutoPrintTrade">自动打印</s:String>
+    <s:String x:Key="I18N_ReLogin">重新登录</s:String>
+    <s:String x:Key="I18N_StartQuery">开始查询</s:String>
+    <s:String x:Key="I18N_StopQuery">停止查询</s:String>
 </ResourceDictionary>

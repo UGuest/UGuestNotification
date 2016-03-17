@@ -10,15 +10,6 @@
         {
             get
             {
-                if (content == null)
-                {
-                    var loginVM = new LoginViewModel();
-                    loginVM.ExistCommand = new RelayCommand(param => OnRequestClose());
-                    loginVM.AuthenticationCompleted += LoginVM_AuthenticationCompleted;
-
-                    content = loginVM;
-                }
-
                 return content;
             }
             set
@@ -27,15 +18,35 @@
             }
         }
 
+
+        public MainWindowViewModel()
+        {
+            var loginVM = new LoginViewModel();
+            loginVM.ExistCommand = new RelayCommand(param => OnRequestClose());
+            loginVM.AuthenticationCompleted += LoginVM_AuthenticationCompleted;
+
+            content = loginVM;
+
+            loginVM.LoginAutomatically();
+        }
+
         private void LoginVM_AuthenticationCompleted(object sender, AuthenticationCompletedEventArgs e)
         {
             if (e.Authorised)
             {
-                var originalVM = content;
+                var originalVM = content as IDisposable;
+
+                e.Context.Password = e.Context.Password.Copy();
 
                 var allTradesVM = new AllTradesViewModel(e.Context);
+                allTradesVM.ExistCommand = new RelayCommand(param => OnRequestClose());
 
                 Content = allTradesVM;
+
+                if (originalVM != null)
+                {
+                    originalVM.Dispose();
+                }
             }
         }
 

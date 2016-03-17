@@ -4,11 +4,35 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ILuffy.UGuest.Notification.View"
+      xmlns:IOPUI="clr-namespace:ILuffy.IOP.UI.View;assembly=IOPUI"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="300" d:DesignWidth="600"
       Title="AllTrades">
-
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0" Style="{StaticResource Style_ButtonStackPanel}">
+            <CheckBox Content="{StaticResource I18N_AutoRefreshAllTrades}" 
+                      IsChecked="{Binding Path=AutoRefreshAllTrades}"/>
+            <CheckBox Content="{StaticResource I18N_AutoPrintTrade}"
+                      IsChecked="{Binding Path=AutoPrintTrade}"/>
+            <IOPUI:ImageButton Text="{StaticResource I18N_StartQuery}" 
+                    Command="{Binding Path=StartQueryCommand}"/>
+            <Button Content="{StaticResource I18N_StopQuery}"
+                    Command="{Binding Path=StopQueryCommand}"/>
+            <Button Content="{StaticResource I18N_ReLogin}"
+                    Command="{Binding Path=ReLoginCommand}"/>
+            <Button Content="{StaticResource I18N_Exist}" 
+                    Command="{Binding Path=ExistCommand}"/>
+        </StackPanel>
+        <ListBox Grid.Column="0" Grid.Row="2"></ListBox>
+        <IOPUI:IOPMessageBar Message="{Binding Path=Message, Mode=OneWay}" />
     </Grid>
 </Page>

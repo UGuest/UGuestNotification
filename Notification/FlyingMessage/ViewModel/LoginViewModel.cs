@@ -70,7 +70,7 @@
                 if (loginCommand == null)
                 {
                     loginCommand = new BackgroundWorkerCommand(
-                        (sender, args) => Login(), 
+                        (sender, args) => Login(true), 
                         param => CanLogin());
                 }
 
@@ -112,7 +112,35 @@
         }
         #endregion
 
-        private void Login()
+        public void LoginAutomatically()
+        {
+            try
+            {
+                var cryptographyService = IocContainer.Container.Resolve<ICryptographyService>();
+                var config = IocContainer.Container.Resolve<IConfigRepository>();
+
+                UserName = config.UserName;
+                Password.SecurePassword = cryptographyService.Unprotect(config.EncryptedPassword).
+                    ConvertToSecureString();
+                RememberPassword = config.RememberAccount;
+
+                if (RememberPassword)
+                {
+                    Login(false);
+                }
+            }
+            catch(Exception ex)
+            {
+                LoggerUtility.WriteMessage(Severity.Error,
+                    I18NUtility.GetString("I18N_LoginFailedWithDetails"), ex);
+
+                Message = new MessageItem(MessageLevel.Error,
+                        I18NUtility.GetString("I18N_MessageBoxTitle"),
+                        I18NUtility.GetString("I18N_LoginFailedWithDetails", ex.Message));
+            }
+        }
+
+        private void Login(bool saveCredential)
         {
             FlyingMessageContext context = null;
             var authorised = false;
@@ -121,7 +149,6 @@
             try
             {
                 var loginService = IocContainer.Container.Resolve<ILoginService>();
-                var cryptographyService = IocContainer.Container.Resolve<ICryptographyService>();
                 var config = IocContainer.Container.Resolve<IConfigRepository>();
 
                 FlyingMessageContext.Current.HostUrl = config.HostUrl;
@@ -132,14 +159,23 @@
 
                 if (loginService.Login())
                 {
-                    config.UserName = userName;
-                    if (rememberPassword)
+                    if (saveCredential)
                     {
-                        config.EncryptedPassword = cryptographyService.Protect(
-                            password.SecurePassword.ConvertToString());
+                        config.UserName = userName;
                         config.RememberAccount = rememberPassword;
+                        if (rememberPassword)
+                        {
+                            var cryptographyService = IocContainer.Container.Resolve<ICryptographyService>();
+                            config.EncryptedPassword = cryptographyService.Protect(
+                                password.SecurePassword.ConvertToString());
+                            config.RememberAccount = rememberPassword;
+                        }
+                        else
+                        {
+                            config.EncryptedPassword = string.Empty;
+                        }
+                        config.Update();
                     }
-                    config.Update();
                     authorised = true;
                 }
                 else
@@ -180,6 +216,16 @@
             {
                 password.Dispose();
                 password = null;
+            }
+
+            if (loginCommand != null)
+            {
+                var disposable = loginCommand as IDisposable;
+
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
             }
         }
     }
