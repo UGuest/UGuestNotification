@@ -15,7 +15,11 @@
 
         IList<string> PrintedTrades { get; set; }
 
+        string PrinterEncodingName { get; set; }
+
         DateTime QueryTime { get; set; }
+
+        int QueryInterval { get; set; }
 
         int RetryTimes { get; set; }
 

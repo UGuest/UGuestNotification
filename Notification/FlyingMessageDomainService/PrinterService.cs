@@ -27,7 +27,7 @@
                 printer.Dispose();
             }
 
-            printer = parameter.CreateInstance<IPrinter>(parameter);
+            printer = PrinterFactory.CreateInstance(parameter);
 
             return true;
         }

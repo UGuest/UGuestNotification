@@ -18,6 +18,7 @@
 
         public LoginViewModel()
         {
+            rememberPassword = true;
         }
 
         #endregion
@@ -124,7 +125,7 @@
                     ConvertToSecureString();
                 RememberPassword = config.RememberAccount;
 
-                if (RememberPassword)
+                if (RememberPassword && Password.SecurePassword.Length > 0)
                 {
                     Login(false);
                 }

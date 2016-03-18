@@ -7,29 +7,7 @@
 
     internal class TradeService : ITradeService
     {
-        private DateTime lastQueryTime = DateTime.MinValue;
-        private bool isChanged = false;
-
-        public IConfigRepository ConfigRepository { get; set; }
         public ITradeRepository TradeRepository { get; set; }
-
-        public DateTime LastQueryTime
-        {
-            get
-            {
-                if (lastQueryTime == DateTime.MinValue)
-                {
-                    lastQueryTime = ConfigRepository.QueryTime;
-                }
-
-                return lastQueryTime;
-            }
-            set
-            {
-                lastQueryTime = value;
-                isChanged = true;
-            }
-        }
 
         public Trade[] GetAllTrades(QueryRule query, IList<string> filterOutTrades)
         {
@@ -56,15 +34,6 @@
             }
 
             return allTrades;
-        }
-
-        public void Update()
-        {
-            if (isChanged)
-            {
-                ConfigRepository.QueryTime = lastQueryTime;
-                isChanged = false;
-            }
         }
     }
 }

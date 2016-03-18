@@ -5,10 +5,6 @@
 
     public interface ITradeService
     {
-        DateTime LastQueryTime { get; set; }
-
         Trade[] GetAllTrades(QueryRule query, IList<string> filterOutTrades);
-
-        void Update();
     }
 }

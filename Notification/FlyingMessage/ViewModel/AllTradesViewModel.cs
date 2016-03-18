@@ -1,10 +1,15 @@
 ﻿namespace ILuffy.UGuest.Notification.ViewModel
 {
     using System;
+    using System.Threading;
     using System.Windows.Input;
     using Domain;
+    using Domain.Service;
+    using IOP.Ioc;
+    using IOP.Printer;
     using IOP.UI.Input;
     using IOP.UI.ViewModel;
+    using Repository;
     class AllTradesViewModel : WorkerViewModelBase, IDisposable
     {
         private FlyingMessageContext context;
@@ -71,7 +76,54 @@
 
         private void QueryAndPrint()
         {
-            Message = new MessageItem(MessageLevel.Info, "Hello", "Test" + autoRefreshAllTrades + autoPrintTrade);
+            var configRepository = IocContainer.Container.Resolve<IConfigRepository>();
+            var tradeService = IocContainer.Container.Resolve<ITradeService>();
+            var printerService = IocContainer.Container.Resolve<IPrinterService>();
+
+            printerService.InitializePrinter(new PrinterParameter()
+            {
+                Type = PrinterType.USB,
+                EncodingName =configRepository.PrinterEncodingName
+            });
+
+            var queryRule = new QueryRule()
+            {
+                PayType = PayTypeLite.All,
+                Status = TradeStatusLite.ToSend,
+                EndTime =DateTime.MinValue
+            };
+
+
+            while (true)
+            {
+                queryRule.StartTime = configRepository.QueryTime;
+
+                var trades = tradeService.GetAllTrades(queryRule, printerService.LastPrintedTrades);
+
+                if (trades != null && trades.Length > 0)
+                {
+                    Message = new MessageItem(MessageLevel.Info, null, "trades.count:" + trades.Length);
+
+                    foreach (var item in trades)
+                    {
+                        printerService.Print(item);
+
+                        if (item.Created > queryRule.StartTime)
+                        {
+                            queryRule.StartTime = item.Created;
+                        }
+                    }
+
+                    printerService.Update();
+
+                    configRepository.QueryTime = queryRule.StartTime;
+                    configRepository.Update();
+                }
+                else
+                {
+                    Thread.Sleep(configRepository.QueryInterval * 1000);
+                }
+            }
         }
 
         public void Dispose()

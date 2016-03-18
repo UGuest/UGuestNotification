@@ -100,10 +100,22 @@
             }
         }
 
+        public string PrinterEncodingName
+        {
+            get { return GetValue("printerEncodingName"); }
+            set { SetValue("printerEncodingName", value); }
+        }
+
         public DateTime QueryTime
         {
             get { return GetDateTime("queryTime"); }
             set { SetValue("queryTime", value.ToDefaultString()); }
+        }
+
+        public int QueryInterval
+        {
+            get { return GetInt32("queryInterval"); }
+            set { SetValue("queryInterval", value.ToString()); }
         }
 
         public int RetryTimes
@@ -141,6 +153,7 @@
             get { return GetBoolean("rememberAccount"); }
             set { SetValue("rememberAccount", value.ToString()); }
         }
+
 
         public void Update()
         {

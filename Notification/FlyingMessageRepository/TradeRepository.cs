@@ -10,7 +10,7 @@
         /// http://xxxx/_api/v1/trade.get?startTime=2015-01-01&endTime=2015-07-01&status=toSend&payType=all
         /// </summary>
         private const string queryTrade = 
-            "{0}/_api/v1/trade.get?startTime={0}&endTime={1}&status={2}&payType={3}&page={4}";
+            "{0}/_api/v1/trade.get?status={0}&payType={1}&page={2}";
 
         public Trade[] GetAllTrades(QueryRule query)
         {
@@ -53,12 +53,20 @@
 
             var context = FlyingMessageContext.Current;
 
-            var requestUrl = string.Format(queryTrade, context.HostUrl, 
-                query.StartTime.ToDefaultString(), 
-                query.EndTime.ToDefaultString(), 
+            var requestUrl = string.Format(queryTrade, context.HostUrl,
                 query.Status.ToString("F"), 
                 query.PayType.ToString("F"), 
                 query.Page);
+
+            if (query.StartTime != DateTime.MinValue)
+            {
+                requestUrl = string.Format("{0}&startTime={1}", requestUrl, query.StartTime.ToDefaultString());
+            }
+
+            if (query.EndTime != DateTime.MinValue)
+            {
+                requestUrl = string.Format("{0}&endTime={1}", requestUrl, query.EndTime.ToDefaultString());
+            }
 
             return Get<QueryResult>(requestUrl);
         }
