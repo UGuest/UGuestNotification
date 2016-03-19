@@ -37,6 +37,10 @@
     <AssemblyOriginatorKeyFile>..\..\Shared\ILuffy.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,6 +53,7 @@
     <Compile Include="ErrorCode.cs" />
     <Compile Include="FlyingMessageContext.cs" />
     <Compile Include="PayTypeLite.cs" />
+    <Compile Include="QueryResultWrapper.cs" />
     <Compile Include="QueryRuleWithPage.cs" />
     <Compile Include="RepositoryException.cs" />
     <Compile Include="Token.cs" />
@@ -60,6 +65,9 @@
     <Compile Include="QueryRule.cs" />
     <Compile Include="Trade.cs" />
     <Compile Include="TradeStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

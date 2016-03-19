@@ -5,8 +5,10 @@
     using System.Windows.Input;
     using Domain;
     using Domain.Service;
+    using IOP;
     using IOP.Ioc;
     using IOP.Printer;
+    using IOP.UI;
     using IOP.UI.Input;
     using IOP.UI.ViewModel;
     using Repository;
@@ -76,53 +78,67 @@
 
         private void QueryAndPrint()
         {
-            var configRepository = IocContainer.Container.Resolve<IConfigRepository>();
-            var tradeService = IocContainer.Container.Resolve<ITradeService>();
-            var printerService = IocContainer.Container.Resolve<IPrinterService>();
-
-            printerService.InitializePrinter(new PrinterParameter()
+            try
             {
-                Type = PrinterType.USB,
-                EncodingName =configRepository.PrinterEncodingName
-            });
+                FlyingMessageContext.Current = context;
 
-            var queryRule = new QueryRule()
-            {
-                PayType = PayTypeLite.All,
-                Status = TradeStatusLite.ToSend,
-                EndTime =DateTime.MinValue
-            };
-
-
-            while (true)
-            {
-                queryRule.StartTime = configRepository.QueryTime;
-
-                var trades = tradeService.GetAllTrades(queryRule, printerService.LastPrintedTrades);
-
-                if (trades != null && trades.Length > 0)
+                var configRepository = IocContainer.Container.Resolve<IConfigRepository>();
+                var tradeService = IocContainer.Container.Resolve<ITradeService>();
+                using (var printerService = IocContainer.Container.Resolve<IPrinterService>())
                 {
-                    Message = new MessageItem(MessageLevel.Info, null, "trades.count:" + trades.Length);
 
-                    foreach (var item in trades)
+                    printerService.InitializePrinter(new PrinterParameter()
                     {
-                        printerService.Print(item);
+                        Type = PrinterType.USB,
+                        EncodingName = configRepository.PrinterEncodingName
+                    });
 
-                        if (item.Created > queryRule.StartTime)
+                    var queryRule = new QueryRule()
+                    {
+                        PayType = PayTypeLite.All,
+                        Status = TradeStatusLite.ToSend,
+                        EndTime = DateTime.MinValue
+                    };
+
+
+                    while (true)
+                    {
+                        queryRule.StartTime = configRepository.QueryTime;
+
+                        var trades = tradeService.GetAllTrades(queryRule, printerService.LastPrintedTrades);
+
+                        if (trades != null && trades.Length > 0)
                         {
-                            queryRule.StartTime = item.Created;
+                            Message = new MessageItem(MessageLevel.Info, null, "trades.count:" + trades.Length);
+
+                            foreach (var item in trades)
+                            {
+                                printerService.Print(item);
+
+                                if (item.Created > queryRule.StartTime)
+                                {
+                                    queryRule.StartTime = item.Created;
+                                }
+                            }
+
+                            printerService.Update();
+
+                            configRepository.QueryTime = queryRule.StartTime;
+                            configRepository.Update();
+                        }
+                        else
+                        {
+                            Thread.Sleep(configRepository.QueryInterval * 1000);
                         }
                     }
-
-                    printerService.Update();
-
-                    configRepository.QueryTime = queryRule.StartTime;
-                    configRepository.Update();
                 }
-                else
-                {
-                    Thread.Sleep(configRepository.QueryInterval * 1000);
-                }
+            }
+            catch(Exception ex)
+            {
+                LoggerUtility.WriteMessage(Severity.Error,
+                    I18NUtility.GetString("I18N_QueryAndPrintFailed"), ex);
+                Message = new MessageItem(MessageLevel.Error, null, 
+                    I18NUtility.GetString("I18N_QueryAndPrintFailed", ex.Message));
             }
         }
 

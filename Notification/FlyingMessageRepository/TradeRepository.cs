@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using I18N;
     using ILuffy.UGuest.Domain;
 
     internal class TradeRepository : RepositoryBase, ITradeRepository
@@ -10,7 +11,7 @@
         /// http://xxxx/_api/v1/trade.get?startTime=2015-01-01&endTime=2015-07-01&status=toSend&payType=all
         /// </summary>
         private const string queryTrade = 
-            "{0}/_api/v1/trade.get?status={0}&payType={1}&page={2}";
+            "{0}/_api/v1/trade.get?status={1}&payType={2}&page={3}";
 
         public Trade[] GetAllTrades(QueryRule query)
         {
@@ -29,7 +30,10 @@
             {
                 var queryResult = GetTrades(pageQuery);
 
-                allTrades.AddRange(queryResult.Trades);
+                if (queryResult.Trades != null)
+                {
+                    allTrades.AddRange(queryResult.Trades);
+                }
 
                 if (queryResult.HasNext)
                 {
@@ -68,7 +72,17 @@
                 requestUrl = string.Format("{0}&endTime={1}", requestUrl, query.EndTime.ToDefaultString());
             }
 
-            return Get<QueryResult>(requestUrl);
+            var resultWrapper = Get<QueryResultWrapper>(requestUrl);
+
+            if (resultWrapper.QueryResult != null)
+            {
+                return resultWrapper.QueryResult;
+            }
+
+            throw new RepositoryException(
+                        FlyingMessageRS.RepositoryRequestErrorMessageFormat(
+                            resultWrapper.Message, 
+                            resultWrapper.ErrorCode));
         }
     }
 }

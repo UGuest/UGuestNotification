@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using IOP.Printer;
-    public interface IPrinterService
+    public interface IPrinterService : IDisposable
     {
         IList<string> LastPrintedTrades { get; }
 

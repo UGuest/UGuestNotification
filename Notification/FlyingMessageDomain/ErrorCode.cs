@@ -5,5 +5,6 @@
     public class ErrorCode
     {
         public static readonly int UnauthorizedAccess = 1;
+
     }
 }

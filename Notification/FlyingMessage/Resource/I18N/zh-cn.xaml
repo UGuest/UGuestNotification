@@ -16,4 +16,5 @@
     <s:String x:Key="I18N_ReLogin">重新登录</s:String>
     <s:String x:Key="I18N_StartQuery">开始查询</s:String>
     <s:String x:Key="I18N_StopQuery">停止查询</s:String>
+    <s:String x:Key="I18N_QueryAndPrintFailed">查询和打印功能出现问题，具体错误信息是:{0}</s:String>
 </ResourceDictionary>
